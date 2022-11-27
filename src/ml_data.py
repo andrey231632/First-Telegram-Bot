@@ -2,15 +2,16 @@ import numpy as np
 from io import BytesIO
 import cv2
 import tensorflow as tf
+from model_congiguration import img_size, name_class
 
 
 class MLData:
 
     def __init__(self):
 
-        self.class_names = ['Plane', 'Car', 'Bird', 'Cat', 'Deer', 'Dog', 'Frog', 'Horse', 'Ship', 'Truck']
+        self.class_names = name_class
 
-        self.model = tf.keras.models.load_model('../models/cifar_classifier.model')
+        self.model = tf.keras.models.load_model('../models/cifar_classifier.model2')
 
     def h_photo(self, update, context):
 
@@ -23,7 +24,7 @@ class MLData:
         img = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
         img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
         img = cv2.resize(img, (32, 32), interpolation=cv2.INTER_AREA)
-        img = img.reshape(1, 32, 32, 3)
+        img = img.reshape(img_size)
 
         prediction = self.model.predict(np.array(img / 255))
 
